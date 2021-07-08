@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "473122474013",
+    "project_id": "telegram-46746",
+    "storage_bucket": "telegram-46746.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473122474013:android:b74d3871526d2b7f5f1ef4",
+        "android_client_info": {
+          "package_name": "com.example.mymassenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473122474013-ddgof10c0ra16hao3p65roq7mb61dnb8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mymassenger",
+            "certificate_hash": "f458643e8fb1236b2ae73c1eb9c220b0f6c5b51b"
+          }
+        },
+        {
+          "client_id": "473122474013-uc2duhhgbqol8j3qg3u6icgrki84f52k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnkXDWr9ftLWctOuS7gsFnKnZa2uKZiiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "473122474013-uc2duhhgbqol8j3qg3u6icgrki84f52k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

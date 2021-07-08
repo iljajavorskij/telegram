@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="foto_account_height">96dp</dimen>
+    <dimen name="foto_account_width">96dp</dimen>
+    <dimen name="text_size16">16sp</dimen>
+    <dimen name="margin_start">16dp</dimen>
+    <dimen name="text_size14">14sp</dimen>
+    <dimen name="margin_top16">16dp</dimen>
+    <dimen name="margin_end16">16dp</dimen>
+    <dimen name="camera_width55">55dp</dimen>
+    <dimen name="camera_geight55">55dp</dimen>
+    <dimen name="appPadding">5dp</dimen>
+    <dimen name="appMargin">16dp</dimen>
+</resources>
