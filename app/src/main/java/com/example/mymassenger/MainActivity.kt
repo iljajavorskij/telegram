@@ -52,4 +52,14 @@ class MainActivity : AppCompatActivity() {
         mAppDriwer = AppDrawer(this,mToolbar)
 
     }
+
+    override fun onStart() {
+        super.onStart()
+        AppState.updateState(AppState.ONLINE)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        AppState.updateState(AppState.OFFLINE)
+    }
 }

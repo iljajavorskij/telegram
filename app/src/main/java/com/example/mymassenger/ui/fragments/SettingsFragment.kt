@@ -61,6 +61,7 @@ class SettingsFragment : BlankFragment(R.layout.fragment_settings) {
         super.onResume()
         setHasOptionsMenu(true)
         initFields()
+        APP_ACTIVITY.mAppDriwer.updateHeader()
 
 
     }
@@ -69,7 +70,7 @@ class SettingsFragment : BlankFragment(R.layout.fragment_settings) {
         mfullname.text =  USER.userName
         bio.text = USER.bio
         userName.text = USER.fullname
-        status.text = USER.status
+        status.text = USER.state
         phone.text = USER.phone
         btn.setOnClickListener { replaceFragment(ChangeUsernameFragment()) }
         btnBio.setOnClickListener { replaceFragment(ChangeBioFragment()) }
@@ -121,7 +122,6 @@ class SettingsFragment : BlankFragment(R.layout.fragment_settings) {
                         photoUser.dowloadAndSetImage(it)
                         showToast("фото добавлено в базу данных")
                         USER.photoUrl = it
-                         APP_ACTIVITY.mAppDriwer.updateHeader()
                     }
                 }
             }

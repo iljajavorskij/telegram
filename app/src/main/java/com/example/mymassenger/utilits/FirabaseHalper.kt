@@ -17,13 +17,16 @@ lateinit var REF_STORAGE_ROOT:StorageReference
 
 const val NODE_USER = "user"
 const val CHILD_ID = "id"
+const val NODE_USERNAMES = "usernames"
+
+
 const val CHILD_PHONE = "phone"
 const val CHILD_USERNAME = "userName"
 const val CHILD_FULLNAME = "fullname"
-const val NODE_USERNAMES = "usernames"
 const val CHILD_BIO = "bio"
 const val FOLDER_PROFILE_IMAGE = "profile_image"
 const val CHILD_PHOTO = "photoUrl"
+const val CHILD_STATE = "state"
 
 fun initFirebase(){
     AUTH = FirebaseAuth.getInstance()

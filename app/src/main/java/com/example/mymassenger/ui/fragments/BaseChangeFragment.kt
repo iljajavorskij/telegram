@@ -15,12 +15,12 @@ open class BaseChangeFragment (layout: Int): Fragment(layout) {
         super.onStart()
         setHasOptionsMenu(true)
         (activity as MainActivity).mAppDriwer.disableDrawer()
-        hideOnKeyboard()
+
     }
 
     override fun onStop() {
         super.onStop()
-
+        hideOnKeyboard()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

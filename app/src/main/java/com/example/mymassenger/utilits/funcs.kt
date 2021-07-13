@@ -48,9 +48,8 @@ fun hideOnKeyboard(){//функция которая убирает клавиа
 }
 
 fun ImageView.dowloadAndSetImage(url:String){
-    val imag = "https://yandex.ru/images/search?pos=2&img_url=https%3A%2F%2Fbasik.ru%2Fimages%2Fmountains_wallpapers_2%2F20_mountains.jpg&text=%D0%BA%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B0&lr=2&rpt=simage&source=wiz"
     Picasso.get()
-        .load(imag)
+        .load("https://yandex.ru/images/search?pos=7&img_url=https%3A%2F%2Fscontent-hel3-1.cdninstagram.com%2Fv%2Ft51.2885-15%2Fe35%2Fs1080x1080%2F120087564_248084696528413_7782036935397588027_n.jpg%3F_nc_ht%3Dscontent-hel3-1.cdninstagram.com%26_nc_cat%3D101%26_nc_ohc%3DqH68mTxyst8AX-8iVoB%26_nc_tp%3D15%26oh%3D5f8ca57d4d40cc34053c08de3ca6c337%26oe%3D5FA84979&text=%D0%BA%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%BA%D0%B0&lr=2&rpt=simage&source=wiz")
         .fit()
         .placeholder(R.drawable.default_photo)
         .into(this)
