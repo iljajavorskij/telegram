@@ -25,6 +25,8 @@ class ContactFragment : BlankFragment(R.layout.fragment_contact) {
     lateinit var mAdapter:FirebaseRecyclerAdapter<CommonModel,ContactHolder>
     lateinit var mRefContacts:DatabaseReference
     lateinit var mUserRef:DatabaseReference
+    private lateinit var mRefUsersListeber:AppValueEventListener//создаю лисенер
+    val mapListener = hashMapOf<DatabaseReference,AppValueEventListener>()//создаю мапу которая принимает ключ ссылку а в значение лисенер
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,14 +63,20 @@ class ContactFragment : BlankFragment(R.layout.fragment_contact) {
                 model: CommonModel
             ) {
                 mUserRef = REF_DATABASE_ROOT.child(NODE_USER).child(model.id)
-                mUserRef.addValueEventListener(AppValueEventListener{
+
+
+                //инициализирую лисенер
+                mRefUsersListeber = AppValueEventListener {
                     val contact = it.getCommonModel()
                     if (contact.fullname.isEmpty()){
                         holder.name.text = contact.phone
                     }else{holder.name.text = contact.fullname}
                     holder.status.text = contact.state
                     holder.photo.dowloadAndSetImage(contact.photoUrl)
-                })
+                }
+
+                mUserRef.addValueEventListener(mRefUsersListeber)//вешаю слушатель на ссылку на рутовую ссылку
+                mapListener[mUserRef] = mRefUsersListeber//передаю лисенер в мапу по ключу рутовой ссылки
 
 
             }
@@ -85,7 +93,10 @@ class ContactFragment : BlankFragment(R.layout.fragment_contact) {
 
     override fun onStop() {
         super.onStop()
-        mAdapter.stopListening()
+        mAdapter.stopListening()//прохожусь циклом по мапе и на каждой итерации по ключу которым является ссылка к которой прикреплен слушатель удаляю удаляю слушатель позначению которым является слушатель
+        mapListener.forEach { map ->
+            map.key.removeEventListener(map.value)
+        }
     }
 }
 
