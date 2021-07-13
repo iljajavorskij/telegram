@@ -1,6 +1,9 @@
 package com.example.mymassenger.ui.objects
 
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ActionBarOverlayLayout
 import androidx.appcompat.widget.Toolbar
@@ -8,6 +11,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
 import com.example.mymassenger.ui.fragments.SettingsFragment
+import com.example.mymassenger.utilits.USER
+import com.example.mymassenger.utilits.dowloadAndSetImage
 import com.example.mymassenger.utilits.replaceFragment
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
@@ -17,21 +22,25 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
+import com.mikepenz.materialdrawer.util.DrawerImageLoader
 
 class  AppDrawer (val mainActivity: AppCompatActivity,val toolbar: Toolbar ){
     lateinit var mDrawer: Drawer
     private lateinit var mHeader: AccountHeader
     private lateinit var mDrawerLayout: DrawerLayout
+    private lateinit var mProfileDrawerItem: ProfileDrawerItem
 
 
     fun create(){
+        initLoader()
         createHeader()
         createDrawer()
         mDrawerLayout = mDrawer.drawerLayout
     }
 
     fun disableDrawer(){
-        mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = false//выключаю стандартрый тогл бургер
+        //mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = false//выключаю стандартрый тогл бургер
         mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)//включаю поведение кнопки назад для бургера
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)//блокирует драйвер в закрытом состоянии
         toolbar.setNavigationOnClickListener {
@@ -42,7 +51,7 @@ class  AppDrawer (val mainActivity: AppCompatActivity,val toolbar: Toolbar ){
 
     fun enableDrawer(){
         mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)//включаю поведение кнопки назад для бургера
-        mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = true//выключаю стандартрый тогл бургер
+//        mDrawer.actionBarDrawerToggle?.isDrawerIndicatorEnabled = true//выключаю стандартрый тогл бургер
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)//блокирует драйвер в закрытом состоянии
         toolbar.setNavigationOnClickListener {
             mDrawer.openDrawer()
@@ -126,12 +135,32 @@ class  AppDrawer (val mainActivity: AppCompatActivity,val toolbar: Toolbar ){
     }
 
     private fun createHeader() {
+        mProfileDrawerItem = ProfileDrawerItem()
+            .withName(USER.fullname)
+            .withEmail(USER.phone)
+            .withIcon(USER.photoUrl)
+            .withIdentifier(200)
         mHeader = AccountHeaderBuilder()
                 .withActivity(mainActivity)
                 .withHeaderBackground(R.drawable.heder)
-                .addProfiles(ProfileDrawerItem()
-                        .withName("ilja javorskij")
-                        .withEmail("89650647892")
-                ).build()
+                .addProfiles(mProfileDrawerItem)
+                .build()
     }
+
+    fun updateHeader(){
+        mProfileDrawerItem
+            .withName(USER.fullname)
+            .withEmail(USER.phone)
+            .withIcon(USER.photoUrl)
+
+        mHeader.updateProfile(mProfileDrawerItem )
+    }
+
+     private fun initLoader(){
+         DrawerImageLoader.init(object :AbstractDrawerImageLoader(){
+             override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable) {
+                 imageView.dowloadAndSetImage(uri.toString())
+             }
+         })
+     }
 }

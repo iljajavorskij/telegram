@@ -7,30 +7,32 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
+import com.example.mymassenger.activity.RegisterActivity
+import com.example.mymassenger.databinding.ActivityMainBinding
+import com.example.mymassenger.utilits.APP_ACTIVITY
 
 
-open class BlankFragment(var layout: Int ) : Fragment() {
+open class BlankFragment(var layout: Int ) : Fragment(layout) {
+    lateinit var rootView:View
 
-    private lateinit var mRootView: View
 
-    override fun onCreateView(inflater: LayoutInflater
-                              , container: ViewGroup?
-                              , savedInstanceState: Bundle?)
-    : View? {
-
-        mRootView = inflater.inflate(layout,container,false)
-
-        return mRootView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        rootView = inflater.inflate(layout,container,false)
+        return rootView
     }
 
     override fun onStart() {
         super.onStart()
-        (activity as MainActivity).mAppDriwer.disableDrawer()
+//        (APP_ACTIVITY).mAppDriwer.disableDrawer()
     }
 
     override fun onStop() {
         super.onStop()
-        (activity as MainActivity).mAppDriwer.enableDrawer()
+//        (APP_ACTIVITY).mAppDriwer.enableDrawer()
     }
 
 

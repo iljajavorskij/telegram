@@ -26,4 +26,10 @@
     <string name="up_menu_chanch_name">изменить имя</string>
     <string name="exit">выход</string>
     <string name="your_phone">Ваш телефон</string>
+    <string name="change_setting_name">Имя</string>
+    <string name="change_setting_surname">Фамилия</string>
+    <string name="ok">ok</string>
+    <string name="data_update">данные обновлены</string>
+    <string name="setting_change_username_hint">Username</string>
+    <string name="change_bio_hint">О себе</string>
 </resources>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.fragment.app.Fragment
 import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
 import com.example.mymassenger.activity.RegisterActivity
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit
 
 class EnterPhoneNumber : BlankFragment(R.layout.fragment_enter_phone_number) {
 
+
     private lateinit var mBinding:  FragmentEnterPhoneNumberBinding//сщздаю связку
     private lateinit var mButton: FloatingActionButton
     private lateinit var mRegisterPhone:EditText
@@ -40,22 +42,21 @@ class EnterPhoneNumber : BlankFragment(R.layout.fragment_enter_phone_number) {
 
     }
 
-    override fun onStart() {
-        super.onStart()
-
+    override fun onResume() {
+        super.onResume()
         mButton = mBinding.registerBtnNext
         mRegisterPhone = mBinding.registerNumber
         mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks(){//создаю колбэк
-            override fun onVerificationCompleted(credential: PhoneAuthCredential) {//этот метод выполнется если верификация прошла успешно
-                AUTH.signInWithCredential(credential).addOnCompleteListener { task ->//если пользователь найден то запускаю мэйн активити вместо регист
-                    if (task.isSuccessful){
-                        showToast("добро поаловать")
-                        (activity as RegisterActivity).replaceActivity(MainActivity())
-                    } else{
-                        showToast( task.exception?.message.toString())
-                    }
+        override fun onVerificationCompleted(credential: PhoneAuthCredential) {//этот метод выполнется если верификация прошла успешно
+            AUTH.signInWithCredential(credential).addOnCompleteListener { task ->//если пользователь найден то запускаю мэйн активити вместо регист
+                if (task.isSuccessful){
+                    showToast("добро поаловать")
+                    (activity as RegisterActivity).replaceActivity(MainActivity())
+                } else{
+                    showToast( task.exception?.message.toString())
                 }
             }
+        }
 
             override fun onCodeSent(id: String, token: PhoneAuthProvider.ForceResendingToken) {
                 replaceFragment(FragmentEnterCode(mPhoneNumber,id))

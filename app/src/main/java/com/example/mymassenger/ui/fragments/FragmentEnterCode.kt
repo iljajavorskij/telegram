@@ -34,7 +34,7 @@ class FragmentEnterCode(val mPhoneNumber: String,val id: String) : BlankFragment
     }
 
     override fun onStart() {
-        super.onStart()
+        super.onStart() 
         (activity as RegisterActivity).title = mPhoneNumber
             mEditText = mBinding.registerCode
         mTextView = mBinding.textCode
@@ -65,8 +65,8 @@ class FragmentEnterCode(val mPhoneNumber: String,val id: String) : BlankFragment
 
                 REF_DATABASE_ROOT.child(NODE_USER).child(uid).updateChildren(dataMap).addOnCompleteListener { task2 ->
                     if (task2.isSuccessful){
-                            showToast("welcome")
                         (activity as RegisterActivity).replaceActivity(MainActivity())
+                        showToast("welcome")
                     }else{
                         showToast(task2.exception?.message.toString())
                     }
