@@ -6,6 +6,7 @@ import android.provider.ContactsContract
 import com.example.mymassenger.models.CommonModel
 import com.example.mymassenger.models.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -20,6 +21,8 @@ lateinit var REF_STORAGE_ROOT:StorageReference
 const val NODE_USER = "user"
 const val CHILD_ID = "id"
 const val NODE_USERNAMES = "usernames"
+const val NODE_PHONES = "phones"
+const val NODE_PHONES_CONTACT = "phones_contact"
 
 
 const val CHILD_PHONE = "phone"
@@ -91,6 +94,23 @@ fun initContacts() {
             }
         }
         cursor?.close()
+        updatePhoneToDatabase(arrayContacts)
     }
 
 }
+
+fun updatePhoneToDatabase(arrayContacts: ArrayList<CommonModel>) {
+    REF_DATABASE_ROOT.child(NODE_PHONES).addListenerForSingleValueEvent(AppValueEventListener{
+        it.children.forEach{snapshot ->
+            arrayContacts.forEach {contact ->
+                if (snapshot.key == contact.phone) {
+                     REF_DATABASE_ROOT.child(NODE_PHONES_CONTACT).child(UID).child(snapshot.value.toString()).child(
+                         CHILD_ID ).setValue(snapshot.value.toString())
+                }
+            }
+        }
+    })
+}
+
+fun DataSnapshot.getCommonModel(): CommonModel
+        = this.getValue(CommonModel::class.java)?: CommonModel()

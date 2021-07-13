@@ -57,29 +57,28 @@ class FragmentEnterCode(val mPhoneNumber: String,val id: String) : BlankFragment
             if (task.isSuccessful){
 
                 val uid = AUTH.currentUser?.uid.toString()//беру айди пользователья
-
+ 
                 val dataMap = mutableMapOf<String,Any>()
                 dataMap[CHILD_ID] = uid
                 dataMap[CHILD_PHONE] = mPhoneNumber
                 dataMap[CHILD_USERNAME] = uid//
+                REF_DATABASE_ROOT.child(NODE_PHONES).child(mPhoneNumber).setValue(uid)
+                    .addOnFailureListener{ showToast("fail") }
+                    . addOnSuccessListener {
+                        REF_DATABASE_ROOT.child(NODE_USER).child(uid).updateChildren(dataMap)
+                            .addOnSuccessListener {
+                                (activity as RegisterActivity).replaceActivity(MainActivity())
+                                showToast("welcome")
 
-                REF_DATABASE_ROOT.child(NODE_USER).child(uid).updateChildren(dataMap).addOnCompleteListener { task2 ->
-                    if (task2.isSuccessful){
-                        (activity as RegisterActivity).replaceActivity(MainActivity())
-                        showToast("welcome")
-                    }else{
-                        showToast(task2.exception?.message.toString())
+                            }
+                            .addOnFailureListener{
+                                showToast("fail ")
+                            }
                     }
-
-                }
-
-
-                showToast("добро поаловать")
-                (activity as RegisterActivity).replaceActivity(MainActivity())
             } else{
                 showToast( task.exception?.message.toString())
             }
+        }
     }
-}
 }
 
