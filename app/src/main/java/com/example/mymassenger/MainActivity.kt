@@ -20,6 +20,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.theartofdev.edmodo.cropper.CropImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
@@ -34,10 +38,16 @@ class MainActivity : AppCompatActivity() {
         APP_ACTIVITY = this
         initFirebase()
         initUser{
+            CoroutineScope(Dispatchers.IO).launch {
+                initContacts()//вызываем функцию которая получает доступ к контактам
+            }
             initFieleds()//функция для инициализации всех полей
             initFunc()//функция для фунцианальности активити
         }
     }
+
+
+
     private fun initFunc() {
         if (AUTH.currentUser != null) {
             setSupportActionBar(mToolbar)//устанавливаем тулбар
@@ -61,5 +71,16 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         AppState.updateState(AppState.OFFLINE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (ContextCompat.checkSelfPermission(APP_ACTIVITY, READ_CONTACT) == PackageManager.PERMISSION_GRANTED){
+            initContacts()
+        }
     }
 }

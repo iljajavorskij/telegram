@@ -20,7 +20,7 @@ open class BaseChangeFragment (layout: Int): Fragment(layout) {
 
     override fun onStop() {
         super.onStop()
-        hideOnKeyboard()
+        hideOnKeyboard() 
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

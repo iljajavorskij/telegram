@@ -2,6 +2,8 @@ package com.example.mymassenger.utilits
 
 import android.net.Uri
 import android.os.storage.StorageManager
+import android.provider.ContactsContract
+import com.example.mymassenger.models.CommonModel
 import com.example.mymassenger.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -65,4 +67,30 @@ inline fun initUser(crossinline function: () -> Unit ) {
             }
             function()
         })
+}
+
+fun initContacts() {
+    if (checkPermission(READ_CONTACT)){
+        val arrayContacts = arrayListOf<CommonModel>()
+        val cursor = APP_ACTIVITY.contentResolver.query(//сщздаю курсор который будет идти по списку контактов
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI//задаю место где будет двигаться курсор
+        ,null
+        ,null
+        ,null
+        ,null
+        )
+
+        cursor?.let {//запускаеся если курсор не нул
+            while (it.moveToNext()){//прохожусь циклом по контактам и записываю в переменные
+                val fillname = it.getString(it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))//
+                val phone = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                val modelNew = CommonModel()
+                modelNew.fullname = fillname
+                modelNew.phone = phone.replace(Regex("[\\s,-]"),"")
+                arrayContacts.add(modelNew)
+            }
+        }
+        cursor?.close()
+    }
+
 }
