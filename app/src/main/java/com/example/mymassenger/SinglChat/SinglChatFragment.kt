@@ -11,6 +11,9 @@ import com.example.mymassenger.databinding.FragmentSinglChatBinding
 import com.example.mymassenger.models.CommonModel
 import com.example.mymassenger.models.User
 import com.example.mymassenger.utilits.*
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_singl_chat.*
@@ -26,8 +29,8 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
     private lateinit var mRefMessages:DatabaseReference
     private lateinit var mRecyclerView:RecyclerView
     private lateinit var mAdapter:SinglChatAdapter
-    private lateinit var mMessageListener:AppValueEventListener
-    private var mListMessges = emptyList<CommonModel>()
+    private lateinit var mMessageListener:ChildEventListener
+    private var mListMessges = mutableListOf<CommonModel>()
 
 
 
@@ -54,12 +57,12 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
         mAdapter = SinglChatAdapter()
         mRefMessages = REF_DATABASE_ROOT.child(NODE_MESSAGES).child(UID).child(contact.id)
         mRecyclerView.adapter = mAdapter
-        mMessageListener = AppValueEventListener { snap ->
-            mListMessges = snap.children.map { it.getCommonModel() }
-            mAdapter.setList(mListMessges)
+
+        mMessageListener = AppChildEventListener{
+            mAdapter.addItem(it.getCommonModel())
             mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
         }
-        mRefMessages.addValueEventListener(mMessageListener)
+        mRefMessages.addChildEventListener(mMessageListener)
     }
 
 

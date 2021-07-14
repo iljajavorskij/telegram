@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymassenger.R
 import com.example.mymassenger.models.CommonModel
+import com.example.mymassenger.utilits.DiffUtilsCallback
 import com.example.mymassenger.utilits.UID
 import com.example.mymassenger.utilits.asTime
 import kotlinx.android.synthetic.main.message_item.view.*
@@ -15,6 +17,7 @@ import kotlinx.android.synthetic.main.message_item.view.*
 class SinglChatAdapter: RecyclerView.Adapter<SinglChatAdapter.SinglChatHolder>() {
 
     var mListMessage = emptyList<CommonModel>()
+    private lateinit var mDiffResult:DiffUtil.DiffResult
 
     class SinglChatHolder(view: View):RecyclerView.ViewHolder(view){
         val chatContainer:ConstraintLayout = view.singl_chat_container
@@ -50,8 +53,17 @@ class SinglChatAdapter: RecyclerView.Adapter<SinglChatAdapter.SinglChatHolder>()
     override fun getItemCount(): Int = mListMessage.size
 
     fun setList(list: List<CommonModel>){
-        mListMessage = list
-        notifyDataSetChanged()
+
+
+    }
+
+    fun addItem(item:CommonModel){
+        val newList = mutableListOf<CommonModel>()
+        newList.addAll(mListMessage)
+        newList.add(item)
+        mDiffResult = DiffUtil.calculateDiff(DiffUtilsCallback(mListMessage,newList))
+        mDiffResult.dispatchUpdatesTo(this)
+        mListMessage = newList
     }
 }
 
