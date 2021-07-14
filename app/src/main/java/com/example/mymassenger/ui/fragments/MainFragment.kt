@@ -9,7 +9,7 @@ import com.example.mymassenger.R
 import com.example.mymassenger.databinding.FragmentChatsBinding
 
 
-class  ChatsFragment : Fragment(R.layout.fragment_chats) {
+class  MainFragment : Fragment(R.layout.fragment_chats) {
 
 
     override fun onResume() {

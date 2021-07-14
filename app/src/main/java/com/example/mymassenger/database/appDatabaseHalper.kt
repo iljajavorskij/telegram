@@ -157,3 +157,57 @@ fun DataSnapshot.getUserModel(): User
          .addOnFailureListener{ showToast(it.message.toString())}
 }
 
+
+fun updateCurrentUsername(newUsername:String) {
+    REF_DATABASE_ROOT.child(NODE_USER).child(UID).child(CHILD_USERNAME)
+        .setValue(newUsername).addOnCompleteListener {
+            if (it.isSuccessful){
+                showToast("Ok")
+                deleteOldUsername(newUsername)
+            }else{
+                showToast(it.exception?.message.toString())
+            }
+        }
+}
+
+private fun deleteOldUsername(newUsername:String) {
+    REF_DATABASE_ROOT.child(NODE_USERNAMES).child(USER.userName).removeValue()
+        .addOnSuccessListener {
+                showToast("Ok")
+                APP_ACTIVITY.supportFragmentManager.popBackStack()
+                USER.userName = newUsername
+        }.addOnFailureListener{
+            showToast(it.message.toString())
+        }
+}
+
+fun setBioToDatabase(newBio: String) {
+    REF_DATABASE_ROOT
+        .child(NODE_USER)
+        .child(UID)
+        .child(CHILD_BIO)
+        .setValue(newBio)
+        .addOnSuccessListener {
+                showToast("ok")
+                USER.bio = newBio
+                APP_ACTIVITY.supportFragmentManager.popBackStack()
+        }.addOnFailureListener{
+            showToast(it.message.toString())
+        }
+}
+
+fun setNameToDatabase(fullName: String) {
+    REF_DATABASE_ROOT//лбращаемся к базе по главвной ссыдке telegram-46746-default-rtdb
+        .child(NODE_USER)//обращаемся к ноде юзерс следующей по дереву
+        .child(UID)//обращаемся к уникальному идентификационному номену сделующему по дереву
+        .child(CHILD_FULLNAME)//добавляем чайлд фуллнаме и присваиваем ему значение из переменной
+        .setValue(fullName)
+        .addOnSuccessListener {//этот слушатель запустится только все пройдет как по маслу
+                USER.fullname = fullName
+                APP_ACTIVITY.mAppDriwer.updateHeader()
+                APP_ACTIVITY.supportFragmentManager.popBackStack()//устанавливаем обработчик события
+        }.addOnFailureListener {
+            showToast(it.message.toString())
+        }
+}
+

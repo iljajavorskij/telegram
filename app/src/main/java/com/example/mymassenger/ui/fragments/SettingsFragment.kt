@@ -2,24 +2,14 @@ package com.example.mymassenger.ui.fragments
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.text.Layout
 import android.view.*
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.solver.state.State
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
-import com.example.mymassenger.activity.RegisterActivity
-import com.example.mymassenger.databinding.FragmentChatsBinding
 import com.example.mymassenger.databinding.FragmentSettingsBinding
 import com.example.mymassenger.utilits.*
-import com.google.firebase.storage.StorageReference
-import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -101,7 +91,7 @@ class SettingsFragment : BlankFragment(R.layout.fragment_settings) {
             R.id.setting_up_menu_exit -> {
                 AppState.updateState(AppState.OFFLINE)
                 AUTH.signOut()
-                (activity as MainActivity).replaceActivity(RegisterActivity())
+                restartActivity()
             }
             R.id.setting_menu_chanch_name -> {
                 replaceFragment(ChangeNameFragment())

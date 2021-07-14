@@ -1,22 +1,17 @@
-package com.example.mymassenger.ui.fragments
+package com.example.mymassenger.ui.fragments.register
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.fragment.app.Fragment
 import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
-import com.example.mymassenger.activity.RegisterActivity
 import com.example.mymassenger.databinding.FragmentEnterPhoneNumberBinding
-import com.example.mymassenger.utilits.AUTH
-import com.example.mymassenger.utilits.replaceActivity
-import com.example.mymassenger.utilits.replaceFragment
-import com.example.mymassenger.utilits.showToast
+import com.example.mymassenger.ui.fragments.BlankFragment
+import com.example.mymassenger.utilits.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import java.util.concurrent.TimeUnit
@@ -51,7 +46,7 @@ class EnterPhoneNumber : BlankFragment(R.layout.fragment_enter_phone_number) {
             AUTH.signInWithCredential(credential).addOnCompleteListener { task ->//если пользователь найден то запускаю мэйн активити вместо регист
                 if (task.isSuccessful){
                     showToast("добро поаловать")
-                    (activity as RegisterActivity).replaceActivity(MainActivity())
+                    restartActivity()
                 } else{
                     showToast( task.exception?.message.toString())
                 }
@@ -80,6 +75,11 @@ class EnterPhoneNumber : BlankFragment(R.layout.fragment_enter_phone_number) {
 
     private fun authUser() {
         mPhoneNumber = mRegisterPhone.text.toString().trim()
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(mPhoneNumber,60,TimeUnit.SECONDS,activity as RegisterActivity,mCallback)
+        PhoneAuthProvider.getInstance()
+            .verifyPhoneNumber(mPhoneNumber
+                ,60
+                ,TimeUnit.SECONDS
+                , APP_ACTIVITY
+                ,mCallback)
     }
 }

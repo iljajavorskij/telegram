@@ -34,17 +34,9 @@ private lateinit var mtextBio:TextView
     override fun change() {
         super.change()
         val newBio = mtextBio.text.toString()
-        REF_DATABASE_ROOT
-            .child(NODE_USER)
-            .child(UID).
-            child(CHILD_BIO)
-            .setValue(newBio)
-            .addOnCompleteListener {
-            if (it.isSuccessful){
-                showToast("ok")
-                 USER.bio = newBio
-                 fragmentManager?.popBackStack()
-            }
-        }
+        setBioToDatabase(newBio)
+
     }
+
+
 }

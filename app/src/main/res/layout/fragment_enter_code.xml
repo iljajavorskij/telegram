@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container"
-    tools:context=".ui.fragments.FragmentEnterCode">
+    tools:context=".ui.fragments.register.FragmentEnterCode">
 
     <ImageView
         android:id="@+id/imagePassword"

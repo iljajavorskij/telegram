@@ -129,8 +129,8 @@ class  AppDrawer (val mainActivity: AppCompatActivity,val toolbar: Toolbar ){
                             drawerItem: IDrawerItem<*>
                     ): Boolean {
                         when (position ){
-                            7 -> mainActivity.replaceFragment(SettingsFragment())
-                            4 -> APP_ACTIVITY.replaceFragment(ContactFragment())
+                            7 -> replaceFragment(SettingsFragment())
+                            4 -> replaceFragment(ContactFragment())
                         }
                         return false
                     }

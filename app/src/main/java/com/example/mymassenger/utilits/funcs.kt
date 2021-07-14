@@ -7,11 +7,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
-import com.example.mymassenger.activity.RegisterActivity
-import com.example.mymassenger.ui.fragments.ChatsFragment
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,27 +19,20 @@ fun showToast(message: String){
 }
 
 
-fun AppCompatActivity.replaceActivity(activity: AppCompatActivity){
-    val intent = Intent(this, activity::class.java)
-    startActivity(intent)
-    this.finish()
-
+fun restartActivity(){
+    val intent = Intent(APP_ACTIVITY, MainActivity::class.java)
+    APP_ACTIVITY.startActivity(intent)
+    APP_ACTIVITY.finish()
 }
 
-fun AppCompatActivity.replaceFragment(fragment: Fragment){
-    supportFragmentManager
+fun replaceFragment(fragment: Fragment){
+    APP_ACTIVITY.supportFragmentManager
         .beginTransaction()
         .addToBackStack(null)
         .replace(R.id.dataConteiner, fragment)
         .commit()
 
 
-}fun Fragment.replaceFragment(fragment: Fragment){
-    fragmentManager
-        ?.beginTransaction()
-        ?.addToBackStack(null)
-        ?.replace(R.id.dataConteiner, fragment)
-        ?.commit()
 }
 
 fun hideOnKeyboard(){//функция которая убирает клавиатуру
