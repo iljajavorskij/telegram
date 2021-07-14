@@ -1,7 +1,6 @@
 package com.example.mymassenger.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.example.mymassenger.models.CommonModel
 import com.example.mymassenger.utilits.*
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -73,6 +71,7 @@ class ContactFragment : BlankFragment(R.layout.fragment_contact) {
                     }else{holder.name.text = contact.fullname}
                     holder.status.text = contact.state
                     holder.photo.dowloadAndSetImage(contact.photoUrl)
+                    holder.itemView.setOnClickListener { replaceFragment(SinglChatFragment(contact)) }
                 }
 
                 mUserRef.addValueEventListener(mRefUsersListeber)//вешаю слушатель на ссылку на рутовую ссылку

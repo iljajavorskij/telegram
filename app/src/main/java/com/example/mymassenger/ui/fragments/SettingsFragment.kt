@@ -112,7 +112,8 @@ class SettingsFragment : BlankFragment(R.layout.fragment_settings) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE
+            && resultCode == RESULT_OK && data != null) {
             val uri = CropImage.getActivityResult(data).uri//получаем ури области которая обрезана из активитирезалт
             val path = REF_STORAGE_ROOT.child(FOLDER_PROFILE_IMAGE).child(UID)//создаю путь
 
@@ -122,6 +123,7 @@ class SettingsFragment : BlankFragment(R.layout.fragment_settings) {
                         photoUser.dowloadAndSetImage(it)
                         showToast("фото добавлено в базу данных")
                         USER.photoUrl = it
+                         APP_ACTIVITY.mAppDriwer.updateHeader()
                     }
                 }
             }

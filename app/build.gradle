@@ -9,6 +9,11 @@ android {
     buildToolsVersion "30.0.3"
     viewBinding.enabled = true
 
+    apply plugin: 'com.android.application'
+    apply plugin: 'kotlin-android'
+    apply plugin: 'kotlin-android-extensions'
+
+
     defaultConfig {
         applicationId "com.example.mymassenger"
         minSdkVersion 21
@@ -62,6 +67,7 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:28.2.1')
     implementation 'com.google.firebase:firebase-firestore-ktx'
+
 
 
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'

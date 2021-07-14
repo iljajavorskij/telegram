@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimaryVariant">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/contact_photo_toolbar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/default_photo"/>
+
+    <TextView
+        android:id="@+id/contact_fullname_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/contact_photo_toolbar"
+        app:layout_constraintTop_toTopOf="@id/contact_photo_toolbar"
+        android:text="Ilja JAvorskij"
+        android:textSize="@dimen/text_size16"
+        android:textColor="@color/black"
+        android:layout_marginStart="@dimen/margin_start"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/contact_state_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_start"
+        app:layout_constraintStart_toEndOf="@id/contact_photo_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/contact_fullname_toolbar"
+        android:text="в сети"
+        android:textSize="@dimen/text_size14"
+        android:textColor="@color/black"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
