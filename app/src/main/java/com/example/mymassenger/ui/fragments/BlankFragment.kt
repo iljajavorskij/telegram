@@ -25,6 +25,11 @@ open class BlankFragment(var layout: Int ) : Fragment(layout) {
         return rootView
     }
 
+    override fun onResume() {
+        super.onResume()
+        APP_ACTIVITY.title = "чаты"
+    }
+
     override fun onStart() {
         super.onStart()
 //        (APP_ACTIVITY).mAppDriwer.disableDrawer()

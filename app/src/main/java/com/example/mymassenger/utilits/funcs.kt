@@ -12,6 +12,8 @@ import com.example.mymassenger.activity.RegisterActivity
 import com.example.mymassenger.ui.fragments.ChatsFragment
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun showToast(message: String){
     Toast.makeText(APP_ACTIVITY,message,Toast.LENGTH_SHORT).show()
@@ -53,4 +55,11 @@ fun ImageView.dowloadAndSetImage(url:String){
         .fit()
         .placeholder(R.drawable.default_photo)
         .into(this)
+}
+
+
+fun String.asTime(): String {
+    val time = Date(this.toLong())
+    val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return timeFormat.format(time)
 }

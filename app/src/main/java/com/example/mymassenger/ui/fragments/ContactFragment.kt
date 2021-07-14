@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymassenger.R
+import com.example.mymassenger.SinglChat.SinglChatFragment
 import com.example.mymassenger.databinding.FragmentContactBinding
 import com.example.mymassenger.models.CommonModel
 import com.example.mymassenger.utilits.*
