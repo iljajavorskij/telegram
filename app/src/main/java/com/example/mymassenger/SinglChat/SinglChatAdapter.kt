@@ -12,11 +12,12 @@ import com.example.mymassenger.models.CommonModel
 import com.example.mymassenger.utilits.DiffUtilsCallback
 import com.example.mymassenger.utilits.UID
 import com.example.mymassenger.utilits.asTime
+import com.google.gson.annotations.Until
 import kotlinx.android.synthetic.main.message_item.view.*
 
 class SinglChatAdapter: RecyclerView.Adapter<SinglChatAdapter.SinglChatHolder>() {
 
-    var mListMessage = emptyList<CommonModel>()
+    var mListMessage = mutableListOf<CommonModel>()
     private lateinit var mDiffResult:DiffUtil.DiffResult
 
     class SinglChatHolder(view: View):RecyclerView.ViewHolder(view){
@@ -57,15 +58,23 @@ class SinglChatAdapter: RecyclerView.Adapter<SinglChatAdapter.SinglChatHolder>()
 
     }
 
-    fun addItem(item:CommonModel){
-        val newList = mutableListOf<CommonModel>()
-        newList.addAll(mListMessage)
-        if (!newList.contains(item)) newList.add(item)
-        newList.sortBy { it.timeStamp.toString()  }
-        mDiffResult = DiffUtil.calculateDiff(DiffUtilsCallback(mListMessage,newList))
-        mDiffResult.dispatchUpdatesTo(this)
-        mListMessage = newList
+    fun addItem(item:CommonModel
+                , toBottom:Boolean
+                ,onSuccess:() -> Unit) {
+        if (toBottom) {
+            if (!mListMessage.contains(item)) {
+                mListMessage.add(item)
+                notifyItemInserted(mListMessage.size)
+            }
+        } else {
+            if (!mListMessage.contains(item)) {
+                mListMessage.add(item)
+                mListMessage.sortBy { it.timeStamp.toString() }
+                notifyItemInserted(0)
+            }
+        }
+        onSuccess()
     }
-}
+ }
 
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mymassenger.R
 import com.example.mymassenger.databinding.FragmentSinglChatBinding
 import com.example.mymassenger.models.CommonModel
@@ -34,7 +35,7 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
     private var mCountMessages = 10
     private var mIsScrilling = false
     private var mSmoothScroller = true
-    private var mListListeners = mutableListOf<AppChildEventListener>()
+    private lateinit var mSwipeRefresh:SwipeRefreshLayout
 
 
 
@@ -52,8 +53,10 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
 
     override fun onResume() {
         super.onResume()
+        mSwipeRefresh = chat_swipe_layout
         initToolBar()
         initRecyclerView()
+
 
     }
 
@@ -64,14 +67,17 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
         mRecyclerView.adapter = mAdapter
 
         mMessageListener = AppChildEventListener{
-            mAdapter.addItem(it.getCommonModel())
-            if (mSmoothScroller) {//когда тру то пролистывает сообщения в начало (вниз)
-                mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
+            mAdapter.addItem(it.getCommonModel(),mSmoothScroller){
+                if (mSmoothScroller) {//когда тру то пролистывает сообщения в начало (вниз)
+                    mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
+                }
+                mSwipeRefresh.isRefreshing = false
             }
+
 
         }
         mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessageListener)//метод лимит то ласт загружает в адаптер только 10 послдних айтемов
-        mListListeners.add(mMessageListener)
+
         mRecyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener(){
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -88,12 +94,14 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
             }
 
         })
+        mSwipeRefresh.setOnRefreshListener { updateData() }
     }
 
     private fun updateData() {//подгружаю еще 10 элементов
         mSmoothScroller = false//не пролистывает элементы в начало при дозагрузке
         mIsScrilling = false
         mCountMessages += 10
+        mRefMessages.removeEventListener(mMessageListener )
         mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessageListener)
         
     }
@@ -130,10 +138,6 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
         super.onPause()
         APP_ACTIVITY.mToolbar.toolbar_info.visibility = View.GONE
         mRefUser.removeEventListener(mListener)
-        mListListeners.forEach{
-            mRefMessages.removeEventListener(it)
-        }
-
-
+        mRefMessages.removeEventListener(mMessageListener)
     }
 }
