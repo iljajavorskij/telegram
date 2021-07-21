@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymassenger.R
 import com.example.mymassenger.databinding.FragmentSinglChatBinding
@@ -29,8 +30,12 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
     private lateinit var mRefMessages:DatabaseReference
     private lateinit var mRecyclerView:RecyclerView
     private lateinit var mAdapter:SinglChatAdapter
-    private lateinit var mMessageListener:ChildEventListener
-    private var mListMessges = mutableListOf<CommonModel>()
+    private lateinit var mMessageListener:AppChildEventListener
+    private var mCountMessages = 10
+    private var mIsScrilling = false
+    private var mSmoothScroller = true
+    private var mListListeners = mutableListOf<AppChildEventListener>()
+
 
 
 
@@ -60,9 +65,37 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
 
         mMessageListener = AppChildEventListener{
             mAdapter.addItem(it.getCommonModel())
-            mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
+            if (mSmoothScroller) {//когда тру то пролистывает сообщения в начало (вниз)
+                mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
+            }
+
         }
-        mRefMessages.addChildEventListener(mMessageListener)
+        mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessageListener)//метод лимит то ласт загружает в адаптер только 10 послдних айтемов
+        mListListeners.add(mMessageListener)
+        mRecyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                    mIsScrilling = true
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (mIsScrilling && dy < 0 ){
+                    updateData()
+                }
+            }
+
+        })
+    }
+
+    private fun updateData() {//подгружаю еще 10 элементов
+        mSmoothScroller = false//не пролистывает элементы в начало при дозагрузке
+        mIsScrilling = false
+        mCountMessages += 10
+        mRefMessages.limitToLast(mCountMessages).addChildEventListener(mMessageListener)
+        
     }
 
 
@@ -76,6 +109,7 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
     mRefUser = REF_DATABASE_ROOT.child(NODE_USER).child(contact.id)
     mRefUser.addValueEventListener(mListener)
     chat_send_imageView.setOnClickListener{
+        mSmoothScroller = true
         val message = chat_editText.text.toString()
         if (message.isEmpty()){
             showToast("введите ссобщение")
@@ -96,7 +130,10 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
         super.onPause()
         APP_ACTIVITY.mToolbar.toolbar_info.visibility = View.GONE
         mRefUser.removeEventListener(mListener)
-        mRefMessages.removeEventListener(mMessageListener)
+        mListListeners.forEach{
+            mRefMessages.removeEventListener(it)
+        }
+
 
     }
 }

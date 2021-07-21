@@ -60,7 +60,8 @@ class SinglChatAdapter: RecyclerView.Adapter<SinglChatAdapter.SinglChatHolder>()
     fun addItem(item:CommonModel){
         val newList = mutableListOf<CommonModel>()
         newList.addAll(mListMessage)
-        newList.add(item)
+        if (!newList.contains(item)) newList.add(item)
+        newList.sortBy { it.timeStamp.toString()  }
         mDiffResult = DiffUtil.calculateDiff(DiffUtilsCallback(mListMessage,newList))
         mDiffResult.dispatchUpdatesTo(this)
         mListMessage = newList
