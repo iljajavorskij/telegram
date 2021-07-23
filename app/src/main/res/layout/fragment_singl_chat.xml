@@ -20,7 +20,7 @@
         android:layout_height="0dp"
         android:background="@color/colorOnPrimary"
         tools:listitem="@layout/message_item"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        />
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
@@ -41,7 +41,18 @@
         android:layout_width="50dp"
         android:layout_height="0dp"
         android:padding="@dimen/appPadding"
+        android:visibility="gone"
         android:src="@drawable/ic_baseline_send_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/chat_editText" />
+    <ImageView
+        android:id="@+id/chat_send_attach"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/appPadding"
+        android:background="@color/white"
+        android:src="@drawable/ic_baseline_attach_file_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/chat_editText" />

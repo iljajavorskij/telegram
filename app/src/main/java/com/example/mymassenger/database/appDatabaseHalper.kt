@@ -28,6 +28,7 @@ const val NODE_USERNAMES = "usernames"
 const val NODE_PHONES = "phones"
 const val NODE_PHONES_CONTACT = "phones_contact"
 const val NODE_MESSAGES = "messages"
+const val FOLDER_MESSAGES_IMAGES = "message_image"
 
 
 const val CHILD_PHONE = "phone"
@@ -37,6 +38,7 @@ const val CHILD_BIO = "bio"
 const val FOLDER_PROFILE_IMAGE = "profile_image"
 const val CHILD_PHOTO = "photoUrl"
 const val CHILD_STATE = "state"
+const val CHILD_IMAGE_URL = "imageUrl"
 
 
 const val CHILD_TEXT = "text"
@@ -145,6 +147,7 @@ fun DataSnapshot.getUserModel(): User
      mapMessage[CHILD_FROM] = UID
      mapMessage[CHILD_TYPE] = typeText
      mapMessage[CHILD_TEXT] = message
+     mapMessage[CHILD_ID] = messageKey.toString()
      mapMessage[CHILD_TIMESTAPE] = ServerValue.TIMESTAMP//устанавливаю время взятое с сервера фаербэйс
 
      val mapDialog = hashMapOf<String,Any>()
@@ -211,3 +214,22 @@ fun setNameToDatabase(fullName: String) {
         }
 }
 
+private fun sendMessageAsImage(receiving_id: String, imageUrl: String, messageKey: String) {
+    val refDialogUser = "$NODE_MESSAGES/$UID/$receiving_id"
+    val refDialogReceivingUser = "$NODE_MESSAGES/$receiving_id/$UID"
+
+    val mapMessage = hashMapOf<String,Any>()
+    mapMessage[CHILD_FROM] = UID
+    mapMessage[CHILD_TYPE] = TYPE_MESSAGE_IMAGE
+    mapMessage[CHILD_ID] = messageKey
+    mapMessage[CHILD_TIMESTAPE] = ServerValue.TIMESTAMP//устанавливаю время взятое с сервера фаербэйс
+    mapMessage[CHILD_IMAGE_URL] = imageUrl
+
+    val mapDialog = hashMapOf<String,Any>()
+    mapDialog["$refDialogUser/$messageKey"] = mapMessage
+    mapDialog["$refDialogReceivingUser/$messageKey"] = mapMessage
+
+    REF_DATABASE_ROOT
+        .updateChildren(mapDialog)
+        .addOnFailureListener{ showToast(it.message.toString())}
+}
