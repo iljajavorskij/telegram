@@ -3,8 +3,7 @@ package com.example.mymassenger.ui.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
-import androidx.fragment.app.Fragment
-import com.example.mymassenger.MainActivity
+import com.example.mymassenger.activity.MainActivity
 import com.example.mymassenger.R
 import com.example.mymassenger.databinding.FragmentChangeNameBinding
 import com.example.mymassenger.utilits.*

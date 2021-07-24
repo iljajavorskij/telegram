@@ -1,12 +1,9 @@
 package com.example.mymassenger.ui.fragments
 
-import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.mymassenger.MainActivity
+import com.example.mymassenger.activity.MainActivity
 import com.example.mymassenger.R
-import com.example.mymassenger.utilits.APP_ACTIVITY
 import com.example.mymassenger.utilits.hideOnKeyboard
 
 open class BaseChangeFragment (layout: Int): Fragment(layout) {

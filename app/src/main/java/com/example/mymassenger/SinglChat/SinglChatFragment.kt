@@ -193,6 +193,7 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
                 getUrlFromStirage(path) {
                     putUrlToDatabase(it) {
                         sendMessageAsImage(contact.id,it,messageKey)
+                        mSmoothScroller = true
                     }
                 }
             }

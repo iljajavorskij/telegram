@@ -3,11 +3,8 @@ package com.example.mymassenger.ui.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
 import com.example.mymassenger.databinding.FragmentChangeUsernameBinding
-import com.example.mymassenger.models.User
 import com.example.mymassenger.utilits.*
 import java.util.*
 

@@ -5,14 +5,11 @@ import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.ActionBarOverlayLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
 import com.example.mymassenger.ui.fragments.ContactFragment
 import com.example.mymassenger.ui.fragments.SettingsFragment
-import com.example.mymassenger.utilits.APP_ACTIVITY
 import com.example.mymassenger.utilits.USER
 import com.example.mymassenger.utilits.dowloadAndSetImage
 import com.example.mymassenger.utilits.replaceFragment

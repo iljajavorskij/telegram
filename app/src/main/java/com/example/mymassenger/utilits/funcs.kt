@@ -5,9 +5,8 @@ import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.mymassenger.MainActivity
+import com.example.mymassenger.activity.MainActivity
 import com.example.mymassenger.R
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat

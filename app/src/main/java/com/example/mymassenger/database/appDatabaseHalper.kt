@@ -214,7 +214,7 @@ fun setNameToDatabase(fullName: String) {
         }
 }
 
-private fun sendMessageAsImage(receiving_id: String, imageUrl: String, messageKey: String) {
+fun sendMessageAsImage(receiving_id: String, imageUrl: String, messageKey: String) {
     val refDialogUser = "$NODE_MESSAGES/$UID/$receiving_id"
     val refDialogReceivingUser = "$NODE_MESSAGES/$receiving_id/$UID"
 

@@ -11,4 +11,6 @@
     <dimen name="camera_geight55">55dp</dimen>
     <dimen name="appPadding">5dp</dimen>
     <dimen name="appMargin">16dp</dimen>
+    <dimen name="chat_image_width">180dp</dimen>
+    <dimen name="chat_image_height">180dp</dimen>
 </resources>

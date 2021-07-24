@@ -1,4 +1,4 @@
-package com.example.mymassenger
+package com.example.mymassenger.activity
 
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity

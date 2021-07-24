@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
 import com.example.mymassenger.databinding.FragmentSettingsBinding
 import com.example.mymassenger.utilits.*

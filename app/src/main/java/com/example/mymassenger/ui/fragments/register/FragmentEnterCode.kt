@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import com.example.mymassenger.MainActivity
 import com.example.mymassenger.R
 import com.example.mymassenger.databinding.FragmentEnterCodeBinding
 import com.example.mymassenger.ui.fragments.BlankFragment
