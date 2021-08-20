@@ -107,7 +107,7 @@ class SettingsFragment : BlankFragment(R.layout.fragment_settings) {
             val uri = CropImage.getActivityResult(data).uri//получаем ури области которая обрезана из активитирезалт
             val path = REF_STORAGE_ROOT.child(FOLDER_PROFILE_IMAGE).child(UID)//создаю путь
 
-            putImageToStorge(uri,path){
+            putFileToStorge(uri,path){
                 getUrlFromStirage(path){
                      putUrlToDatabase(it){
                         photoUser.dowloadAndSetImage(it)

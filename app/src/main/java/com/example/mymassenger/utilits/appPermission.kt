@@ -7,6 +7,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 const val READ_CONTACT = Manifest.permission.READ_CONTACTS
+const val RECORD_AUDIO = Manifest.permission.RECORD_AUDIO
+
 const val REQUEST_CODE = 200//создал реквест код
 
 fun checkPermission(permission: String):Boolean{

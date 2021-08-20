@@ -32,8 +32,10 @@ class SinglChatAdapter: RecyclerView.Adapter<SinglChatAdapter.SinglChatHolder>()
         //image
         val blockReceivedImage :ConstraintLayout = view.singl_chat_image_receiver_container
         val blockUserImage :ConstraintLayout = view.singl_chat_image_user_container
+
         val receivedImage :ImageView = view.received_image
         val userImage :ImageView = view.user_image
+
         val receivedTime :TextView = view.chat_received_image_message_time
         val userTime :TextView = view.chat_user_image_message_time
 

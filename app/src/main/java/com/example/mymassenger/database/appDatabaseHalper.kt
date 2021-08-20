@@ -1,7 +1,6 @@
 package com.example.mymassenger.utilits
 
 import android.net.Uri
-import android.os.storage.StorageManager
 import android.provider.ContactsContract
 import com.example.mymassenger.models.CommonModel
 import com.example.mymassenger.models.User
@@ -21,6 +20,7 @@ lateinit var REF_STORAGE_ROOT:StorageReference
 
 
 const val TYPE_TEXT = "text"
+const val TYPE_VOICE = "VOICE"
 
 const val NODE_USER = "user"
 const val CHILD_ID = "id"
@@ -29,6 +29,7 @@ const val NODE_PHONES = "phones"
 const val NODE_PHONES_CONTACT = "phones_contact"
 const val NODE_MESSAGES = "messages"
 const val FOLDER_MESSAGES_IMAGES = "message_image"
+const val FOLDER_FILES = "messages_files"
 
 
 const val CHILD_PHONE = "phone"
@@ -69,7 +70,7 @@ inline fun getUrlFromStirage(path: StorageReference,crossinline function: (url:S
         .addOnSuccessListener {function(it.toString())}
 }
 
-inline fun putImageToStorge(uri: Uri, path: StorageReference,crossinline function: () -> Unit) {
+inline fun putFileToStorge(uri: Uri, path: StorageReference, crossinline function: () -> Unit) {
     path.putFile(uri)
         .addOnSuccessListener {function()}
 
@@ -214,16 +215,16 @@ fun setNameToDatabase(fullName: String) {
         }
 }
 
-fun sendMessageAsImage(receiving_id: String, imageUrl: String, messageKey: String) {
+fun sendMessageAsFile(receiving_id: String, fileUrl: String, messageKey: String, typeMessage:String) {
     val refDialogUser = "$NODE_MESSAGES/$UID/$receiving_id"
     val refDialogReceivingUser = "$NODE_MESSAGES/$receiving_id/$UID"
 
     val mapMessage = hashMapOf<String,Any>()
     mapMessage[CHILD_FROM] = UID
-    mapMessage[CHILD_TYPE] = TYPE_MESSAGE_IMAGE
+    mapMessage[CHILD_TYPE] = typeMessage 
     mapMessage[CHILD_ID] = messageKey
     mapMessage[CHILD_TIMESTAPE] = ServerValue.TIMESTAMP//устанавливаю время взятое с сервера фаербэйс
-    mapMessage[CHILD_IMAGE_URL] = imageUrl
+    mapMessage[CHILD_IMAGE_URL] = fileUrl
 
     val mapDialog = hashMapOf<String,Any>()
     mapDialog["$refDialogUser/$messageKey"] = mapMessage
@@ -233,3 +234,21 @@ fun sendMessageAsImage(receiving_id: String, imageUrl: String, messageKey: Strin
         .updateChildren(mapDialog)
         .addOnFailureListener{ showToast(it.message.toString())}
 }
+
+fun getMessageKey(id:String) = REF_DATABASE_ROOT
+.child(NODE_MESSAGES)
+.child(UID)
+.child(id)
+.push().key.toString()
+
+
+fun uploadFileToStorage(uri:Uri,messageKey:String,receivedId:String,typeMessage:String) {
+    val path = REF_STORAGE_ROOT.child(FOLDER_FILES).child(messageKey)//создаю путь
+
+        putFileToStorge(uri, path) {
+        getUrlFromStirage(path) {
+            putUrlToDatabase(it) {
+                sendMessageAsFile(receivedId ,it,messageKey,typeMessage)
+            }
+        }
+    }}

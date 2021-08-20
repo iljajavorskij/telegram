@@ -1,13 +1,17 @@
 package com.example.mymassenger.SinglChat
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,6 +29,9 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_singl_chat.*
 import kotlinx.android.synthetic.main.toolbar_info.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fragment_singl_chat) {
@@ -66,24 +73,55 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initFields() {
         mSwipeRefresh = chat_swipe_layout
         mLayoutManager = LinearLayoutManager(this.context)
         chat_editText.addTextChangedListener(AppTextWatcher{
             val strihg = chat_editText.text.toString()
-            if (strihg.isEmpty()){
+            if (strihg.isEmpty()||strihg == "запись"){
                 chat_send_imageView.visibility = View.GONE
                 chat_send_attach.visibility = View.VISIBLE
+                chat_send_voice.visibility = View.VISIBLE
+
             }else{
                 chat_send_imageView.visibility = View.VISIBLE
                 chat_send_attach.visibility = View.GONE
+                chat_send_voice.visibility = View.GONE
             }
         })
 
         chat_send_attach.setOnClickListener{
             attachFile()
         }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            chat_send_voice.setOnTouchListener { v, event ->
+                if (checkPermission(RECORD_AUDIO)){
+                    if (event.action == MotionEvent.ACTION_DOWN){
+                        //record
+                            val messageKey = getMessageKey(contact.id)
+                            AppVoiceRecorder.startRecorder(messageKey)
+                        chat_editText.setText("запись")
+                        chat_send_voice.setColorFilter(ContextCompat.getColor(APP_ACTIVITY,R.color.accent))
+                    }else if(event.action == MotionEvent.ACTION_UP){
+                        //stop recording
+                            AppVoiceRecorder.stopRecorder { file, messageKey ->
+                                uploadFileToStorage(Uri.fromFile(file),messageKey,contact.id, TYPE_MESSAGE_VOICE)
+                                mSmoothScroller = true
+                            }
+                        chat_editText.setText("")
+                        chat_send_voice.colorFilter = null
+                    }
+                }
+                true
+            }
+        }
+
+
     }
+
+
 
     private fun attachFile() {
         CropImage.activity()
@@ -180,23 +218,9 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
             && resultCode == Activity.RESULT_OK && data != null) {
             val uri =
                 CropImage.getActivityResult(data).uri//получаем ури области которая обрезана из активитирезалт
-            val messageKey = REF_DATABASE_ROOT
-                .child(NODE_MESSAGES)
-                .child(UID)
-                .child(contact.id)
-                .push().key.toString()
-            val path = REF_STORAGE_ROOT
-                .child(FOLDER_MESSAGES_IMAGES)
-                .child(messageKey)//создаю путь
-
-            putImageToStorge(uri, path) {
-                getUrlFromStirage(path) {
-                    putUrlToDatabase(it) {
-                        sendMessageAsImage(contact.id,it,messageKey)
-                        mSmoothScroller = true
-                    }
-                }
-            }
+            val messageKey = getMessageKey(contact.id)
+            uploadFileToStorage(uri,messageKey,contact.id, TYPE_MESSAGE_IMAGE)
+            mSmoothScroller = true
         }
     }
 
@@ -207,6 +231,11 @@ class SinglChatFragment(private val contact: CommonModel) : Fragment(R.layout.fr
         APP_ACTIVITY.mToolbar.toolbar_info.visibility = View.GONE
         mRefUser.removeEventListener(mListener)
         mRefMessages.removeEventListener(mMessageListener)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        AppVoiceRecorder.releaseRecording()
     }
 }
 
